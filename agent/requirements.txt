@@ -1,0 +1,6 @@
+aiohttp
+pyautogui
+pyperclip
+psutil
+pywin32
+qrcode

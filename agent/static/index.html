@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DeckLink">
+<meta name="theme-color" content="#1b2230">
+<title>DeckLink</title>
+<style>
+:root{--bg:#1b2230;--panel:#232c3f;--key:#2e3a52;--key2:#394864;--ink:#eef2fa;--dim:#93a0ba;--on:#6f9bff;--ok:#5fd4a0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.4 ui-rounded,-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+main{flex:1;min-height:0;position:relative}
+.pane{display:none;height:100%;overflow:auto;padding:10px 14px}
+.pane.show{display:block}
+#p-deck{padding:0}
+#decks{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain}
+.deck{height:100%;scroll-snap-align:start;scroll-snap-stop:always;padding:12px 14px;display:flex;flex-direction:column;gap:14px}
+.dh{display:flex;align-items:center;gap:12px}.dh .i{font-size:32px}.dh b{font-size:22px}.dh small{display:block;color:var(--dim);font-size:13px;max-width:60vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{margin-left:auto;width:10px;height:10px;border-radius:50%;background:#e5636b}.dot.on{background:var(--ok)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.key{aspect-ratio:1;border:0;border-radius:22px;background:var(--key);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:600 13px ui-rounded,-apple-system,sans-serif;box-shadow:0 3px 0 rgba(0,0,0,.25);padding:6px}
+.key span{font-size:34px;line-height:1}
+.key:active,.key.hit{transform:translateY(3px);box-shadow:none;background:var(--on);color:#fff}
+.hint{margin-top:auto;text-align:center;color:var(--dim);font-size:12px}
+#pips{position:absolute;right:4px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px}
+#pips i{width:6px;height:6px;border-radius:3px;background:#ffffff40}#pips i.on{background:var(--on)}
+textarea{width:100%;min-height:120px;border:0;border-radius:16px;background:var(--panel);color:var(--ink);padding:14px;font:16px ui-rounded,-apple-system,sans-serif}
+h2{font-size:15px;margin:18px 4px 8px;color:var(--dim);font-weight:600}
+.row{display:flex;gap:10px;margin-top:10px}
+.btn{flex:1;border:0;border-radius:14px;background:var(--on);color:#fff;font:600 16px ui-rounded,-apple-system,sans-serif;padding:14px}.btn.alt{background:var(--key2);color:var(--ink)}
+#in{background:var(--panel);border-radius:16px;padding:14px;min-height:80px;white-space:pre-wrap;word-break:break-word;max-height:30vh;overflow:auto}
+.file{display:block;background:var(--panel);border-radius:14px;padding:12px 14px;margin-top:8px;color:var(--ink);text-decoration:none;word-break:break-all}
+#bar{height:6px;border-radius:3px;background:var(--key);margin-top:10px;overflow:hidden}#bar i{display:block;height:100%;width:0;background:var(--ok)}
+nav{display:flex;background:var(--panel);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+nav button{flex:1;border:0;background:none;color:var(--dim);font:600 13px ui-rounded,-apple-system,sans-serif;padding:8px;border-radius:12px}nav button.show{color:var(--on);background:var(--key)}
+.note{color:var(--dim);font-size:14px;margin:6px 4px}
+</style></head><body>
+<main>
+  <section class="pane show" id="p-deck"><div id="decks"></div><div id="pips"></div></section>
+  <section class="pane" id="p-clip">
+    <h2>Send to PC</h2><textarea id="out" placeholder="Paste or type text here"></textarea>
+    <div class="row"><button class="btn alt" id="paste">Paste</button><button class="btn" id="send">Send to PC</button></div>
+    <h2>Copied on PC</h2><div id="in"></div>
+    <div class="row"><button class="btn" id="copy">Copy to iPhone</button></div><div class="note" id="msg"></div>
+  </section>
+  <section class="pane" id="p-files">
+    <h2>Send photos to PC</h2>
+    <input id="pick" type="file" accept="image/*,video/*" multiple hidden><button class="btn" id="choose">Choose photos</button>
+    <div id="bar"><i></i></div><div class="note" id="msg2"></div>
+    <h2>From PC</h2><div id="list"></div><div class="row"><button class="btn alt" id="refresh">Refresh list</button></div>
+  </section>
+</main>
+<nav><button class="show" data-p="deck">Deck</button><button data-p="clip">Clipboard</button><button data-p="files">Photos &amp; files</button></nav>
+<script>
+const $=s=>document.querySelector(s);
+const q=new URLSearchParams(location.search);
+const K=q.get('k')||localStorage.getItem('k')||'';
+try{if(q.get('k'))localStorage.setItem('k',K)}catch(e){}
+let ws,decks=[],connected=false;
+function connect(){
+  ws=new WebSocket(`ws://${location.host}/ws?k=${encodeURIComponent(K)}`);
+  ws.onopen=()=>{connected=true;dots()};
+  ws.onclose=()=>{connected=false;dots();setTimeout(connect,1500)};
+  ws.onmessage=e=>{const d=JSON.parse(e.data);
+    if(d.t==='decks')render(d);
+    if(d.t==='clip')$('#in').textContent=d.text};
+}
+function dots(){document.querySelectorAll('.dot').forEach(x=>x.classList.toggle('on',connected))}
+function render(d){
+  const el=$('#decks'),h=el.clientHeight||1;
+  const keep=Math.round(el.scrollTop/h);
+  decks=d.decks;
+  el.innerHTML=decks.map(k=>`<section class="deck" data-id="${k.id}"><div class="dh"><div class="i">${k.icon}</div><div><b>${k.name}</b><small>${k.title.replace(/</g,'&lt;')}</small></div><div class="dot ${connected?'on':''}"></div></div>
+  <div class="grid">${k.buttons.map((b,i)=>`<button class="key" data-i="${i}"><span>${b.icon}</span>${b.label}</button>`).join('')}</div><div class="hint">Swipe up or down for next deck</div></section>`).join('');
+  const act=decks.findIndex(k=>k.id===d.active);
+  const prevActive=render.a;render.a=d.active;
+  const target=(prevActive!==d.active&&act>=0)?act:Math.min(keep,decks.length-1);
+  el.scrollTo({top:target*el.clientHeight,behavior:prevActive!==d.active?'smooth':'auto'});
+  pips();
+}
+function pips(){const el=$('#decks');const n=decks.length,i=Math.round(el.scrollTop/(el.clientHeight||1));
+  $('#pips').innerHTML=decks.map((_,j)=>`<i class="${j===i?'on':''}"></i>`).join('')}
+$('#decks').addEventListener('scroll',pips);
+$('#decks').addEventListener('click',e=>{
+  const b=e.target.closest('.key');if(!b)return;
+  const id=+b.closest('.deck').dataset.id;
+  ws.send(JSON.stringify({t:'press',deck:id,i:+b.dataset.i}));
+  b.classList.add('hit');setTimeout(()=>b.classList.remove('hit'),120);
+});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button,.pane').forEach(x=>x.classList.remove('show'));
+  b.classList.add('show');$('#p-'+b.dataset.p).classList.add('show');
+  if(b.dataset.p==='files')loadList();
+});
+$('#send').onclick=()=>{const t=$('#out').value;if(!t)return;ws.send(JSON.stringify({t:'clip',text:t}));$('#msg').textContent='Sent. Press Ctrl+V on your PC.'};
+$('#paste').onclick=async()=>{try{$('#out').value=await navigator.clipboard.readText()}catch(e){$('#out').focus();$('#msg').textContent='Long-press the box and tap Paste.'}};
+$('#copy').onclick=async()=>{const t=$('#in').textContent;
+  try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();a.setSelectionRange(0,1e6);document.execCommand('copy');a.remove()}
+  $('#msg').textContent='Copied to iPhone.'};
+$('#choose').onclick=()=>$('#pick').click();
+$('#pick').onchange=()=>{
+  const fd=new FormData();[...$('#pick').files].forEach(f=>fd.append('files',f,f.name));
+  const x=new XMLHttpRequest();x.open('POST','/upload?k='+encodeURIComponent(K));
+  x.upload.onprogress=e=>{$('#bar i').style.width=(e.loaded/e.total*100)+'%'};
+  x.onload=()=>{$('#msg2').textContent=`Saved ${JSON.parse(x.responseText).saved} file(s) to DeckLink\\incoming on your PC.`;$('#pick').value=''};
+  x.onerror=()=>{$('#msg2').textContent='Upload failed. Check Wi-Fi and try again.'};
+  x.send(fd);
+};
+async function loadList(){
+  const n=await (await fetch('/files?k='+encodeURIComponent(K))).json();
+  $('#list').innerHTML=n.length?n.map(f=>`<a class="file" href="/dl/${encodeURIComponent(f)}?k=${encodeURIComponent(K)}">${f}</a>`).join(''):'<div class="note">Nothing here. Drop files into DeckLink\\outgoing on your PC.</div>';
+}
+$('#refresh').onclick=loadList;
+connect();
+</script></body></html>

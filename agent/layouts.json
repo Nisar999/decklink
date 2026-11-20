@@ -1,0 +1,709 @@
+{
+ "contexts": [
+  {
+   "id": "youtube",
+   "name": "YouTube",
+   "icon": "▶️",
+   "match": {
+    "exe": [
+     "chrome.exe",
+     "msedge.exe",
+     "brave.exe",
+     "firefox.exe"
+    ],
+    "title": [
+     "YouTube"
+    ]
+   },
+   "buttons": [
+    {
+     "label": "Back 10s",
+     "icon": "⏪",
+     "action": {
+      "type": "key",
+      "key": "j"
+     }
+    },
+    {
+     "label": "Play / Pause",
+     "icon": "⏯️",
+     "action": {
+      "type": "key",
+      "key": "k"
+     }
+    },
+    {
+     "label": "Forward 10s",
+     "icon": "⏩",
+     "action": {
+      "type": "key",
+      "key": "l"
+     }
+    },
+    {
+     "label": "Slower",
+     "icon": "🐢",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "shift",
+       ","
+      ]
+     }
+    },
+    {
+     "label": "Fullscreen",
+     "icon": "⛶",
+     "action": {
+      "type": "key",
+      "key": "f"
+     }
+    },
+    {
+     "label": "Faster",
+     "icon": "🐇",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "shift",
+       "."
+      ]
+     }
+    },
+    {
+     "label": "Captions",
+     "icon": "💬",
+     "action": {
+      "type": "key",
+      "key": "c"
+     }
+    },
+    {
+     "label": "Mute",
+     "icon": "🔇",
+     "action": {
+      "type": "key",
+      "key": "m"
+     }
+    },
+    {
+     "label": "Theater",
+     "icon": "🎬",
+     "action": {
+      "type": "key",
+      "key": "t"
+     }
+    }
+   ]
+  },
+  {
+   "id": "spotify",
+   "name": "Spotify",
+   "icon": "🎧",
+   "match": {
+    "exe": [
+     "spotify.exe"
+    ]
+   },
+   "buttons": [
+    {
+     "label": "Previous",
+     "icon": "⏮️",
+     "action": {
+      "type": "key",
+      "key": "prevtrack"
+     }
+    },
+    {
+     "label": "Play / Pause",
+     "icon": "⏯️",
+     "action": {
+      "type": "key",
+      "key": "playpause"
+     }
+    },
+    {
+     "label": "Next",
+     "icon": "⏭️",
+     "action": {
+      "type": "key",
+      "key": "nexttrack"
+     }
+    },
+    {
+     "label": "Volume down",
+     "icon": "🔉",
+     "action": {
+      "type": "key",
+      "key": "volumedown"
+     }
+    },
+    {
+     "label": "Mute",
+     "icon": "🔇",
+     "action": {
+      "type": "key",
+      "key": "volumemute"
+     }
+    },
+    {
+     "label": "Volume up",
+     "icon": "🔊",
+     "action": {
+      "type": "key",
+      "key": "volumeup"
+     }
+    }
+   ]
+  },
+  {
+   "id": "vscode",
+   "name": "VS Code",
+   "icon": "🧑‍💻",
+   "match": {
+    "exe": [
+     "code.exe",
+     "cursor.exe"
+    ]
+   },
+   "buttons": [
+    {
+     "label": "Command palette",
+     "icon": "🔎",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "shift",
+       "p"
+      ]
+     }
+    },
+    {
+     "label": "Quick open",
+     "icon": "📂",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "p"
+      ]
+     }
+    },
+    {
+     "label": "Terminal",
+     "icon": "⌨️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "`"
+      ]
+     }
+    },
+    {
+     "label": "Run / Debug",
+     "icon": "🐞",
+     "action": {
+      "type": "key",
+      "key": "f5"
+     }
+    },
+    {
+     "label": "Sidebar",
+     "icon": "🗂️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "b"
+      ]
+     }
+    },
+    {
+     "label": "Format",
+     "icon": "✨",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "alt",
+       "shift",
+       "f"
+      ]
+     }
+    },
+    {
+     "label": "Comment",
+     "icon": "💭",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "/"
+      ]
+     }
+    },
+    {
+     "label": "Save all",
+     "icon": "💾",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "alt",
+       "s"
+      ]
+     }
+    },
+    {
+     "label": "Undo",
+     "icon": "↩️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "z"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "powerpoint",
+   "name": "PowerPoint",
+   "icon": "📊",
+   "match": {
+    "exe": [
+     "powerpnt.exe"
+    ]
+   },
+   "buttons": [
+    {
+     "label": "Previous",
+     "icon": "◀️",
+     "action": {
+      "type": "key",
+      "key": "left"
+     }
+    },
+    {
+     "label": "Start show",
+     "icon": "🎞️",
+     "action": {
+      "type": "key",
+      "key": "f5"
+     }
+    },
+    {
+     "label": "Next",
+     "icon": "▶️",
+     "action": {
+      "type": "key",
+      "key": "right"
+     }
+    },
+    {
+     "label": "From this slide",
+     "icon": "📍",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "shift",
+       "f5"
+      ]
+     }
+    },
+    {
+     "label": "Black screen",
+     "icon": "⬛",
+     "action": {
+      "type": "key",
+      "key": "b"
+     }
+    },
+    {
+     "label": "End show",
+     "icon": "⏹️",
+     "action": {
+      "type": "key",
+      "key": "esc"
+     }
+    }
+   ]
+  },
+  {
+   "id": "meeting",
+   "name": "Meeting",
+   "icon": "📹",
+   "match": {
+    "exe": [
+     "zoom.exe",
+     "ms-teams.exe",
+     "teams.exe"
+    ]
+   },
+   "buttons": [
+    {
+     "label": "Zoom mute",
+     "icon": "🎙️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "alt",
+       "a"
+      ]
+     }
+    },
+    {
+     "label": "Zoom video",
+     "icon": "📷",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "alt",
+       "v"
+      ]
+     }
+    },
+    {
+     "label": "Zoom share",
+     "icon": "🖥️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "alt",
+       "s"
+      ]
+     }
+    },
+    {
+     "label": "Teams mute",
+     "icon": "🎙️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "shift",
+       "m"
+      ]
+     }
+    },
+    {
+     "label": "Teams video",
+     "icon": "📷",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "shift",
+       "o"
+      ]
+     }
+    },
+    {
+     "label": "Teams hand",
+     "icon": "✋",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "shift",
+       "k"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "browser",
+   "name": "Browser",
+   "icon": "🌐",
+   "match": {
+    "exe": [
+     "chrome.exe",
+     "msedge.exe",
+     "brave.exe",
+     "firefox.exe"
+    ]
+   },
+   "buttons": [
+    {
+     "label": "New tab",
+     "icon": "➕",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "t"
+      ]
+     }
+    },
+    {
+     "label": "Close tab",
+     "icon": "✖️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "w"
+      ]
+     }
+    },
+    {
+     "label": "Reopen tab",
+     "icon": "♻️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "shift",
+       "t"
+      ]
+     }
+    },
+    {
+     "label": "Back",
+     "icon": "⬅️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "alt",
+       "left"
+      ]
+     }
+    },
+    {
+     "label": "Refresh",
+     "icon": "🔄",
+     "action": {
+      "type": "key",
+      "key": "f5"
+     }
+    },
+    {
+     "label": "Forward",
+     "icon": "➡️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "alt",
+       "right"
+      ]
+     }
+    },
+    {
+     "label": "Dev tools",
+     "icon": "🛠️",
+     "action": {
+      "type": "key",
+      "key": "f12"
+     }
+    },
+    {
+     "label": "Find",
+     "icon": "🔍",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "f"
+      ]
+     }
+    },
+    {
+     "label": "Next tab",
+     "icon": "⏭️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "ctrl",
+       "tab"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "default",
+   "name": "Desktop",
+   "icon": "🖥️",
+   "match": {},
+   "buttons": [
+    {
+     "label": "Previous",
+     "icon": "⏮️",
+     "action": {
+      "type": "key",
+      "key": "prevtrack"
+     }
+    },
+    {
+     "label": "Play / Pause",
+     "icon": "⏯️",
+     "action": {
+      "type": "key",
+      "key": "playpause"
+     }
+    },
+    {
+     "label": "Next",
+     "icon": "⏭️",
+     "action": {
+      "type": "key",
+      "key": "nexttrack"
+     }
+    },
+    {
+     "label": "Volume down",
+     "icon": "🔉",
+     "action": {
+      "type": "key",
+      "key": "volumedown"
+     }
+    },
+    {
+     "label": "Mute",
+     "icon": "🔇",
+     "action": {
+      "type": "key",
+      "key": "volumemute"
+     }
+    },
+    {
+     "label": "Volume up",
+     "icon": "🔊",
+     "action": {
+      "type": "key",
+      "key": "volumeup"
+     }
+    },
+    {
+     "label": "Screenshot",
+     "icon": "✂️",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "win",
+       "shift",
+       "s"
+      ]
+     }
+    },
+    {
+     "label": "Show desktop",
+     "icon": "🪟",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "win",
+       "d"
+      ]
+     }
+    },
+    {
+     "label": "Lock PC",
+     "icon": "🔒",
+     "action": {
+      "type": "hotkey",
+      "keys": [
+       "win",
+       "l"
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "generic": [
+  {
+   "label": "Copy",
+   "icon": "📋",
+   "action": {
+    "type": "hotkey",
+    "keys": [
+     "ctrl",
+     "c"
+    ]
+   }
+  },
+  {
+   "label": "Paste",
+   "icon": "📥",
+   "action": {
+    "type": "hotkey",
+    "keys": [
+     "ctrl",
+     "v"
+    ]
+   }
+  },
+  {
+   "label": "Undo",
+   "icon": "↩️",
+   "action": {
+    "type": "hotkey",
+    "keys": [
+     "ctrl",
+     "z"
+    ]
+   }
+  },
+  {
+   "label": "Save",
+   "icon": "💾",
+   "action": {
+    "type": "hotkey",
+    "keys": [
+     "ctrl",
+     "s"
+    ]
+   }
+  },
+  {
+   "label": "Select all",
+   "icon": "🔲",
+   "action": {
+    "type": "hotkey",
+    "keys": [
+     "ctrl",
+     "a"
+    ]
+   }
+  },
+  {
+   "label": "Find",
+   "icon": "🔍",
+   "action": {
+    "type": "hotkey",
+    "keys": [
+     "ctrl",
+     "f"
+    ]
+   }
+  },
+  {
+   "label": "Minimize",
+   "icon": "➖",
+   "action": {
+    "type": "win",
+    "op": "min"
+   }
+  },
+  {
+   "label": "Maximize",
+   "icon": "⬜",
+   "action": {
+    "type": "win",
+    "op": "max"
+   }
+  },
+  {
+   "label": "Close window",
+   "icon": "✖️",
+   "action": {
+    "type": "win",
+    "op": "close"
+   }
+  }
+ ]
+}
