@@ -1,0 +1,30 @@
+name: build
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  windows-exe:
+    runs-on: windows-latest
+    defaults: { run: { working-directory: agent } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -r requirements.txt pyinstaller
+      - run: pyinstaller --onefile --name DeckLink --add-data "layouts.json;." --add-data "static;static" server.py
+      - uses: actions/upload-artifact@v4
+        with: { name: DeckLink-windows-exe, path: agent/dist/DeckLink.exe }
+  ios-ipa:
+    runs-on: macos-latest
+    defaults: { run: { working-directory: ios } }
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - run: xcodebuild -project DeckLink.xcodeproj -scheme DeckLink -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
+      - run: |
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/DeckLink.app Payload/
+          zip -qr DeckLink.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with: { name: DeckLink-ios-ipa, path: ios/DeckLink.ipa }
